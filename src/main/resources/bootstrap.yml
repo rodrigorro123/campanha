@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: @project.artifactId@-v@projeto.application.fullVersion@
+    index: ${spring.application.name}
+  cloud:
+    config:
+      enabled: false
+info:
+  application:
+    groupId:  @project.groupId@
+    artifactId: @project.artifactId@
+    name: @project.name@
+    version: @project.version@
+    environment: ${spring.profiles.active:default}
+    apiVersion: v@projeto.application.fullVersion@

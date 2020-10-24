@@ -1,0 +1,92 @@
+# Endpoints
+endpoints:
+  restart:
+    enabled: true
+
+# Eureka
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    enabled: true
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    statusPageUrlPath: /actuator/info
+    healthCheckUrlPath: /actuator/health
+    preferIpAddress: true
+    instanceId: ${spring.cloud.client.hostname}:${random.int}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 5
+
+##Feign
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 30000
+        loggerLevel: basic
+        readTimeout: 30000
+  compression:
+    request:
+      mime-types: "application/json"
+      
+# Logging
+logging:
+  level:
+    com.netflix.discovery: 'ERROR'
+    org.springframework.cloud: 'ERROR'
+
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+    endpoint:
+      metrics:
+        enabled: false
+      prometheus:
+        enabled: true
+  security:
+    enabled: false      
+
+# Server
+server:
+  port: 8090
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types:
+      - application/json
+    min-response-size: 10240
+  
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2db
+  datasource:
+    data:
+    -  classpath:data.sql
+    url: jdbc:h2:file:/home/rodrigo/h2db;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
